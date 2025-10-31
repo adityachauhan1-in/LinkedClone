@@ -14,7 +14,7 @@ const navigate = useNavigate();
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/posts");
+        const res = await axios.get("https://linkedclone-frontend.onrender.com/api/posts");
         setPosts(res.data.reverse());
       } catch (err) {
         console.error(err);
@@ -25,7 +25,7 @@ const navigate = useNavigate();
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/users/me", {
+        const res = await axios.get("https://linkedclone-frontend.onrender.com/api/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -43,7 +43,7 @@ const navigate = useNavigate();
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/posts",
+        "https://linkedclone-frontend.onrender.com/api/posts",
         {  text : content },
         {
           headers: {
@@ -64,7 +64,7 @@ const handleLike = async (postId) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.put(
-      `http://localhost:5000/api/posts/${postId}/like`,
+      `https://linkedclone-frontend.onrender.com/api/posts/${postId}/like`,
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
