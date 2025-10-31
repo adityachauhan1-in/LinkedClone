@@ -12,9 +12,11 @@ app.use(express.json());// we use above because we want to return all data in th
 
 import authRoute from '../backend/routes/authRoute.js'
 app.use("/api/auth",authRoute);  
+app.use("/api/users",authRoute)
 
 import postRoute from '../backend/routes/postRoute.js'
 app.use("/api/posts",postRoute)
+
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
 

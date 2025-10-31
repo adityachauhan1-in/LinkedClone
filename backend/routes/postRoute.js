@@ -43,5 +43,28 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// for like and unlike the post 
+router.put("/:id/like", verifyToken, async (req, res) => {
+  try {
+      const post = await Post.findById(req.params.id); // first verify
+    if (!post) return res.status(404).json({ error: "Post not found" });
+
+    const userId = req.user.id;
+    const hasLiked = post.likes.includes(userId);
+
+    if (hasLiked) {
+      post.likes = post.likes.filter((id) => id.toString() !== userId);
+
+    } else {
+      post.likes.push(userId);
+    }
+
+    await post.save();
+    
+    res.json({ success: true, likes: post.likes.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;

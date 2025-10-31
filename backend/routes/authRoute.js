@@ -4,6 +4,22 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 const router = express.Router();
+// for navbar profile section 
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+ // if failed to verify token 
+  if (!authHeader) 
+    return res.status(401).json({ message: "No token provided" });
+
+  const token = authHeader.split(" ")[1];
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) 
+        return res.status(401).json({ message: "Invalid token" });
+    req.user = decoded;
+    next();
+  });
+};
 
 //  for Signup
 router.post("/signup", async (req, res) => {
@@ -45,5 +61,13 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+// for showing the user info at the top 
+router.get("/me",verifyToken,async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 export default router;
